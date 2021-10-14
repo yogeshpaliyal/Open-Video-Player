@@ -16,14 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.rememberPermissionState
 import com.yogeshpaliyal.openvideoplayer.data.Video
+import java.net.URLEncoder
 
 @ExperimentalPermissionsApi
 @Composable
-fun VideosList(viewModel: ListViewModel = hiltViewModel()) {
+fun VideosList(navController: NavController, viewModel: ListViewModel = hiltViewModel()) {
 
     val readStoragePermissionState =
         rememberPermissionState(android.Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -61,7 +65,7 @@ fun VideosList(viewModel: ListViewModel = hiltViewModel()) {
         val videos = viewModel.getVideos().collectAsState(initial = listOf())
 
         videos.value.let {
-            VideosListData(it)
+            VideosListData(navController,it)
         }
     }
 
@@ -70,15 +74,20 @@ fun VideosList(viewModel: ListViewModel = hiltViewModel()) {
 
 
 @Composable
-fun VideosListData(videos: List<Video>) {
+fun VideosListData(navController: NavController, videos: List<Video>) {
     LazyColumn {
         itemsIndexed(videos) { index: Int, item: Video ->
             Column {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp), text = item.videoName
-                )
+                Button(onClick = {
+                    navController.navigate("videos/${URLEncoder.encode(item.contentId.toString(),"UTF-8")}")
+                }) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp), text = item.videoName
+                    )
+
+                }
                 if (index != videos.lastIndex)
                     Divider()
 
@@ -87,10 +96,10 @@ fun VideosListData(videos: List<Video>) {
     }
 }
 
-@Preview(showSystemUi = true)
+/*@Preview(showSystemUi = true)
 @Composable
 fun PreviewVideoListData() {
     val videos =
         listOf<Video>(Video(Uri.EMPTY, "Test Name", 0, 0), Video(Uri.EMPTY, "Test Name", 0, 0))
     VideosListData(videos = videos)
-}
+}*/
