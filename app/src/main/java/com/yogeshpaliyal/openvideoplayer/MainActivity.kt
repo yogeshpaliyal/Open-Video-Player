@@ -1,5 +1,6 @@
 package com.yogeshpaliyal.openvideoplayer
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -40,9 +41,9 @@ class MainActivity : ComponentActivity() {
                             "videos/{video}",
                             arguments = listOf(navArgument("video") { type = NavType.StringType })
                         ) { backstackEntry ->
-                            val video = backstackEntry.arguments?.getString("video")
+                            val video = Uri.parse(backstackEntry.arguments?.getString("video"))
                             Log.d("VideoDetail", "onCreate: $video")
-                            //VideoDetail(navController,video)
+                            VideoDetail(navController,video)
                         }
 
                     }
