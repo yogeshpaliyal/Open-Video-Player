@@ -14,20 +14,20 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.yogeshpaliyal.openvideoplayer.ui.list.ListViewModel
 import com.yogeshpaliyal.openvideoplayer.ui.list.VideosList
 import com.yogeshpaliyal.openvideoplayer.ui.theme.OpenVideoPlayerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<ListViewModel>()
 
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel
         setContent {
             OpenVideoPlayerTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    //VideosList()
+                    VideosList()
                 }
             }
         }

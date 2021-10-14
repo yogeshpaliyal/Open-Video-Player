@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import com.yogeshpaliyal.openvideoplayer.data.Video
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.flow
@@ -15,7 +16,7 @@ class VideosRepository @Inject constructor(@ApplicationContext private val conte
 
     override fun getVideosList() = flow<List<Video>> {
         // Display videos in alphabetical order based on their display name.
-
+        Log.d("Testing123", "getVideosList: init")
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 MediaStore.Video.Media.getContentUri(
@@ -51,6 +52,9 @@ class VideosRepository @Inject constructor(@ApplicationContext private val conte
                 cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
             val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
 
+            Log.d("Testing123", "getVideosList: cursor init")
+
+
             while (cursor.moveToNext()) {
                 // Get values of columns for a given video.
                 val id = cursor.getLong(idColumn)
@@ -66,7 +70,12 @@ class VideosRepository @Inject constructor(@ApplicationContext private val conte
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 videoList += Video(contentUri, name, duration, size)
+                Log.d("Testing123", "getVideosList: video")
+
             }
+
+            Log.d("Testing123", "getVideosList: videolist")
+
             emit(videoList)
         }
     }
