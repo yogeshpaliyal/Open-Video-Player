@@ -18,7 +18,7 @@ import javax.sql.DataSource
 
 
 @Composable
-fun VideoDetail(navController: NavController, videoUri: Uri){
+fun VideoDetail(videoUri: Uri){
     // This is the official way to access current context from Composable functions
     val context = LocalContext.current
 
@@ -39,8 +39,8 @@ fun VideoDetail(navController: NavController, videoUri: Uri){
         }
     }
 
-    AndroidView(factory = { context ->
-        PlayerView(context).apply {
+    AndroidView(factory = { viewContext ->
+        PlayerView(viewContext).apply {
             player = exoPlayer
             exoPlayer.playWhenReady = true
             exoPlayer.prepare()
