@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.yogeshpaliyal.openvideoplayer.ui.list.FolderList
+import com.yogeshpaliyal.openvideoplayer.ui.folders.FolderList
 import com.yogeshpaliyal.openvideoplayer.ui.list.VideosListData
 import com.yogeshpaliyal.openvideoplayer.ui.player.VideoDetail
 import com.yogeshpaliyal.openvideoplayer.ui.theme.OpenVideoPlayerTheme
@@ -50,17 +49,24 @@ class MainActivity : ComponentActivity() {
                         NavHost(navController = navController, startDestination = "folders") {
                             composable("folders") {
                                 dashboardState = DashboardState.ShowTopBar("Folders")
-                                FolderList(navController)
+                                FolderList{ item ->
+                                    navController.navigate(
+                                        "folders/${
+                                            item.id
+                                        }?folderName=${item.name}"
+                                    )
+                                }
                             }
-                            composable("folders/{folderID}",
+                            composable("folders/{folderID}?folderName={folderName}",
                                 arguments = listOf(navArgument("folderID") {
                                     type = NavType.StringType
-                                })
+                                }, navArgument("folderName"){ defaultValue = "" })
                             ) { backstackEntry ->
                                 val folderId = backstackEntry.arguments?.getString("folderID")
+                                val folderName = backstackEntry.arguments?.getString("folderName") ?: ""
                                 folderId ?: return@composable
 
-                                dashboardState = DashboardState.ShowTopBar(folderId)
+                                dashboardState = DashboardState.ShowTopBar(folderName)
                                 VideosListData(folderId) { item ->
                                     navController.navigate(
                                         "videos/${
@@ -85,23 +91,8 @@ class MainActivity : ComponentActivity() {
 
                         }
                     }
-
-
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    OpenVideoPlayerTheme {
-        Greeting("Android")
     }
 }
