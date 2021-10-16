@@ -1,2 +1,7 @@
 # Open-Video-Player
-***Compose + Exoplayer***
+***Compose + Exoplayer***  
+
+
+### Plan
+ - [ ] Videos list
+ - [ ] Video player
