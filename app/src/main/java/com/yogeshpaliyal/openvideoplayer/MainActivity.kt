@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.yogeshpaliyal.openvideoplayer.ui.folders.FolderList
+import com.yogeshpaliyal.openvideoplayer.ui.list.ListViewModel
 import com.yogeshpaliyal.openvideoplayer.ui.list.VideosListData
 import com.yogeshpaliyal.openvideoplayer.ui.player.VideoDetail
 import com.yogeshpaliyal.openvideoplayer.ui.theme.OpenVideoPlayerTheme
@@ -66,8 +68,15 @@ class MainActivity : ComponentActivity() {
                                 val folderName = backstackEntry.arguments?.getString("folderName") ?: ""
                                 folderId ?: return@composable
 
+                                val backstack by remember{
+                                    mutableStateOf(navController.getBackStackEntry("folders"))
+                                }
+
+                                val sharedVm  = hiltViewModel<ListViewModel>(backstack)
+
+
                                 dashboardState = DashboardState.ShowTopBar(folderName)
-                                VideosListData(folderId) { item ->
+                                VideosListData(folderId, sharedVm) { item ->
                                     navController.navigate(
                                         "videos/${
                                             URLEncoder.encode(
