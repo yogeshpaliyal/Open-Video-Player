@@ -64,6 +64,13 @@ fun VideoDetail(videoUri: Uri) {
 
     Player(exoPlayer)
 
+    DisposableEffect(exoPlayer){
+        onDispose {
+            exoPlayer.stop()
+            exoPlayer.release()
+        }
+    }
+
     /*Controller(controllerState = controllerState) {
         controllerState = it
     }*/
@@ -98,9 +105,12 @@ fun Controller(controllerState: Int, changeControllerState: (Int) -> Unit) {
     }
 
 
-    Box(modifier = Modifier.fillMaxSize().background(backgroundColor).clickable {
-        changeControllerState(if (controllerState == View.VISIBLE) View.GONE else View.VISIBLE)
-    }) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+        .clickable {
+            changeControllerState(if (controllerState == View.VISIBLE) View.GONE else View.VISIBLE)
+        }) {
 
     }
 

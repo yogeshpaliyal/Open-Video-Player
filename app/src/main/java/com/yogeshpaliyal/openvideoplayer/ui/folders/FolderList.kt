@@ -9,12 +9,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -86,11 +85,15 @@ fun FolderListData(
                 .padding(8.dp)
             ) {
 
-                Icon(Icons.Rounded.List, "", modifier = Modifier.align(Alignment.CenterVertically))
+                Icon(
+                    painterResource(id = com.yogeshpaliyal.openvideoplayer.R.drawable.ic_folder),
+                    "",
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth(), text = item.name
+                        .fillMaxWidth().align(Alignment.CenterVertically), text = item.name
                 )
 
             }
